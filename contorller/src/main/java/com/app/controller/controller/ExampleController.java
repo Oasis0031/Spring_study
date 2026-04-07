@@ -1,10 +1,12 @@
 package com.app.controller.controller;
 
+import com.app.controller.domain.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +15,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/ex/*") //프론트 컨트롤러처럼 사용
 public class ExampleController {
+
+    private final MemberVO memberVO;
+
+    public ExampleController(MemberVO memberVO) {
+        this.memberVO = memberVO;
+    }
 
     // Get 방식, html도 Get으로 변경
 //
@@ -71,6 +79,29 @@ public class ExampleController {
             @ModelAttribute("hobby") String hobby
     ){
         return "ex05";
+    }
+
+    @GetMapping("ex06")
+    public String goToEx06(){
+        return "ex06";
+    }
+
+    @GetMapping("/ex06-Complete")
+    public String ex06Complete(
+            @ModelAttribute("memberName") String memberName
+    ){
+        return "ex06-Complete";
+    }
+
+
+    // 회원가입 완료 후
+    // 페이지에 000님 환영합니다 출력
+    @PostMapping("/ex06")
+    public String ex06(MemberVO memberVO){
+        log.info("응답 들어옴");
+        log.info("memberVO: {}", memberVO);
+//        return "redirect:/ex/ex06-Complete?memberName=" + memberVO.getMemberName();
+        return "redirect:/ex/ex06-Complete";
     }
 
 }

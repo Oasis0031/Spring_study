@@ -1,5 +1,6 @@
 package com.app.controller.mapper;
 
+import com.app.controller.domain.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-public class MapperTests {
+public class PostMapperTest {
 
     @Autowired
-    private TimeMapper timeMapper;
+    private PostMapper postMapper;
 
     @Test
-    public void mapperTests() {
-        log.info(timeMapper.getTime());
+    public void selectAllTest() {
+        PostVO postVO = new PostVO();
+        postVO.getPostTitle();
+        postVO.getPostContent();
+        postMapper.selectAll(postVO);
     }
 
 }
