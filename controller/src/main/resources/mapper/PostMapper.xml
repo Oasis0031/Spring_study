@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.controller.mapper.PostMapper">
+
+    <select id="selectAll" resultType="PostVO">
+        SELECT ID, POST_TITLE,POST_CONTENT,MEMBER_ID,POST_READ_COUNT
+        FROM TBL_POST
+        ORDER BY ID DESC
+    </select>
+
+</mapper>
+
