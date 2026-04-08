@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.member.mapper.MemberMapper">
+<!--  회원가입  -->
+
+    <insert id="insert" parameterType="">
+        INSERT INTO TBL_MEMBER
+        VALUES (SEQ_MEMBER.nextval, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_NAME)
+    </insert>
+
+<!-- 로그인  -->
+
+<!--  회원 정보 수정  -->
+
+<!-- 회원 탈퇴 -->
+</mapper>
