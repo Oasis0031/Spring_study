@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시판 목록</title>
+</head>
+<body>
+<!--    게시판 리스트 화면에 출력하기 -->
+<!--/*@thymesVar id="products" type=""*/-->
+<th:block th:if="${#lists.size(products) != 0}">
+    <table border="1">
+        <tr>
+            <th>상품명</th>
+            <th>상품가격</th>
+            <th>상품재고</th>
+            <th>브랜드</th>
+        </tr>
+        <th:block th:each="product: ${products}">
+            <tr th:object="${product}">
+                <td th:text="*{productName}"></td>
+                <td th:text="*{productPrice}"></td>
+                <td th:text="*{productStock}"></td>
+                <td th:text="*{productBrand}"></td>
+            </tr>
+        </th:block>
+    </table>
+
+
+</th:block>
+<th:block th:unless="${#lists.size(products) != 0}">
+    <h1>게시글이 없습니다.</h1>
+</th:block>
+</body>
+</html>

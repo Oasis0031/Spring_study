@@ -1,6 +1,7 @@
 package com.app.threetier.service;
 
 import com.app.threetier.domain.dto.PostDTO;
+import com.app.threetier.domain.vo.PostVO;
 
 import java.util.List;
 
@@ -15,5 +16,10 @@ public interface PostService {
 
     public PostDTO getPost(Long id);
 
+    public void updatePost(PostVO postVO);
+
+    public void increaseReadCount(Long id);
+
+    public void delete(Long id);
 }
 

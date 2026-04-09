@@ -1,6 +1,7 @@
 package com.app.threetier.service;
 
 import com.app.threetier.domain.dto.PostDTO;
+import com.app.threetier.domain.vo.PostVO;
 import com.app.threetier.exception.PostException;
 import com.app.threetier.repository.PostDAO;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,22 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPost(Long id) {
-       return postDAO.findByID(id).orElseThrow(() -> new PostException("post not found"));
+        this.increaseReadCount(id);
+        return postDAO.findByID(id).orElseThrow(() -> new PostException("post not found"));
     }
 
+    @Override
+    public void updatePost(PostVO postVO) {
+        postDAO.update(postVO);
+    }
+
+    @Override
+    public void increaseReadCount(Long id) {
+        postDAO.updateReadCount(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        postDAO.delete(id);
+    }
 }

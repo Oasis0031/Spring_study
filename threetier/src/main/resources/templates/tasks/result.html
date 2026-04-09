@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<head>
+    <title>계산 결과</title>
+</head>
+<body>
+<h2>입력하신 점수의 합계입니다.</h2>
+<p>총점: <span th:text="${task.total}">0</span>점</p>
+<p>평균: <span th:text="${task.average}">0</span>점</p>
+
+<a th:href="@{/tasks/register}">다시 계산하기</a>
+</body>
+</html>

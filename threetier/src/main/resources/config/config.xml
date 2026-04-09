@@ -10,10 +10,13 @@
         <!-- vo alias -->
         <typeAlias type="com.app.threetier.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
         <typeAlias type="com.app.threetier.domain.vo.PostVO" alias="PostVO"></typeAlias>
-
+        <typeAlias type="com.app.threetier.domain.vo.ProductVO" alias="ProductVO"></typeAlias>
+        <typeAlias type="com.app.threetier.domain.vo.TaskVO" alias="TaskVO"></typeAlias>
+        <typeAlias type="com.app.threetier.domain.vo.StudentVO" alias="StudentVO"></typeAlias>
         <!-- dto alias -->
         <typeAlias type="com.app.threetier.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
-
+        <typeAlias type="com.app.threetier.domain.dto.ProductDTO" alias="ProductDTO"></typeAlias>
+        <typeAlias type="com.app.threetier.domain.dto.TaskDTO" alias="TaskDTO"></typeAlias>
 
     </typeAliases>
 </configuration>

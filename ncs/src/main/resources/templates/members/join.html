@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <form th:action="@{/member/join}" method="post" th:object="@{memberVO}">
+    <form th:action="@{/member/join}" method="post" th:object="${memberVO}">
         <input type="text" th:field="*{memberEmail}" placeholder="이메일 입력ㄱㄱ">
         <input type="password" th:field="*{memberPassword}" placeholder="비번 입력ㄱㄱ">
         <input type="text" th:field="*{memberName}" placeholder="이름 입력ㄱㄱ">
