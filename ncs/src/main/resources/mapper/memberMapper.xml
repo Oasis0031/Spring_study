@@ -2,30 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ncs.mapper.MemberMapper">
 
-<!-- 횐갑   -->
+    <!-- 횐갑   -->
 
-    <insert id="insert" parameterType="MemberVO">
-            INSERT INTO TBL_MEMBER
-            VALUES (SEQ_MEMBER.nextval, #{memberEmail}, #{memberPassword}, #{memberName})
-    </insert>
+        <insert id="insert" parameterType="MemberVO">
+                INSERT INTO TBL_MEMBER
+                VALUES (SEQ_MEMBER.nextval, #{memberEmail}, #{memberPassword}, #{memberName})
+        </insert>
 
-<!--  로그인  -->
+    <!--  로그인  -->
 
-    <select id="selectByIdMemberEmailAndMemberPassword" parameterType="MemberVO" resultType="MemberVO">
-           SELECT ID
-           FROM TBL_MEMBER
-           WHERE MEMBER_EMAIL = #{memberEmail}
-                AND MEMBER_PASSWORD = #{memberPassword}
-    </select>
+        <select id="selectByIdMemberEmailAndMemberPassword" parameterType="MemberVO" resultType="MemberVO">
+               SELECT ID, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_NAME
+               FROM TBL_MEMBER
+               WHERE MEMBER_EMAIL = #{memberEmail}
+                    AND MEMBER_PASSWORD = #{memberPassword}
+        </select>
 
-<!-- 업뎃  -->
-    <update id="update" parameterType="memberVO">
-        UPDATE TBL_MEMBER
-            SET MEMBER_EMAIL=#{memberEmail} ,MEMBER_PASSWORD=#{memberPassword}, MEMBER_NAME=#{memberName}
-        WHERE ID = #{id}
-    </update>
+    <!-- 업뎃  -->
+        <update id="update" parameterType="memberVO">
+            UPDATE TBL_MEMBER
+                SET MEMBER_PASSWORD=#{memberPassword}, MEMBER_NAME=#{memberName}
+            WHERE ID = #{id}
+        </update>
 
-    <!--  탈퇴 -->
+        <!--  탈퇴 -->
+        <delete id="delete" parameterType="Long">
+            DELETE TBL_MEMBER
+            WHERE ID = #{id}
+        </delete>
 
-
-</mapper>
+    </mapper>

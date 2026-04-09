@@ -73,7 +73,7 @@ public class MemberController {
 
     @GetMapping("update")
     public void goToUpdate(Model model){
-        model.addAttribute("member", session.getAttribute("member"));
+        model.addAttribute("memberVO", session.getAttribute("member"));
     }
 
     @PostMapping("update")

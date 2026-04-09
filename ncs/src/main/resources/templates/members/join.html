@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <form th:action="@{/member/join}" method="post" th:object="${memberVO}">
+    <form th:action="@{/members/join}" method="post" th:object="${memberVO}">
         <input type="text" th:field="*{memberEmail}" placeholder="이메일 입력ㄱㄱ">
         <input type="password" th:field="*{memberPassword}" placeholder="비번 입력ㄱㄱ">
         <input type="text" th:field="*{memberName}" placeholder="이름 입력ㄱㄱ">
@@ -20,12 +20,13 @@
 <script>
 
     const form = document.querySelector('form');
-    const inputs = document.querySelector('input');
+    const inputs = document.querySelectorAll('input');
     const btn = document.querySelector('button');
 
 btn.addEventListener('click', () => {
     for (let input of inputs) {
-        if(!input.value) return alert(input.name + "값이 없습니다.");
+        if(!input.value)
+            return alert(input.name + "값이 없습니다.");
     }
     form.submit();
 })
