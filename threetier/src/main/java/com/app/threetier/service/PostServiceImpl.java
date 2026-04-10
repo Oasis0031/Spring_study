@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-
-//예외처리
-// 트랜젝션 관리
+// 예외처리
+// 트랜잭션 관리
 // 메인 로직 작성
 @Service
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO getPost(Long id) {
         this.increaseReadCount(id);
-        return postDAO.findByID(id).orElseThrow(() -> new PostException("post not found"));
+        return postDAO.findById(id).orElseThrow(() -> new PostException("게시물을 찾을 수 없습니다."));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deletePost(Long id) {
         postDAO.delete(id);
     }
 }

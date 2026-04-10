@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.threetier.mapper.PostMapper">
-
     <select id="selectAll" resultType="PostDTO">
         SELECT
-            TBP.ID, TBP.POST_TITLE, TBP.POST_CONTENT, TBP.MEMBER_ID,
+            TBP.ID, TBP.POST_TITLE, TBP.POST_CONTENT, TBP.MEMBER_ID, TBP.POST_READ_COUNT,
             TBM.MEMBER_EMAIL, TBM.MEMBER_NAME
         FROM TBL_POST TBP
         JOIN TBL_MEMBER TBM
@@ -13,7 +12,7 @@
 
     <select id="select" parameterType="Long" resultType="PostDTO">
         SELECT
-            TBP.ID, TBP.POST_TITLE, TBP.POST_CONTENT, TBP.MEMBER_ID,
+            TBP.ID, TBP.POST_TITLE, TBP.POST_CONTENT, TBP.MEMBER_ID, TBP.POST_READ_COUNT,
             TBM.MEMBER_EMAIL, TBM.MEMBER_NAME
         FROM TBL_POST TBP
         JOIN TBL_MEMBER TBM
@@ -37,7 +36,4 @@
         DELETE FROM TBL_POST
         WHERE ID = #{id}
     </delete>
-
-
 </mapper>
-

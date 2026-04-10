@@ -5,16 +5,12 @@ import com.app.threetier.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
 @Repository
 @RequiredArgsConstructor
 public class ProductDAO {
+    private final ProductMapper productMapper;
 
-    public final ProductMapper productMapper;
-
-    public List<ProductVO> selectAll() {
-        return productMapper.selectAll();
+    public void save(ProductVO productVO){
+        productMapper.insert(productVO);
     }
 }

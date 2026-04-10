@@ -6,10 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -83,16 +80,20 @@ public class MemberController {
 
     @PostMapping("update")
     public RedirectView update(MemberVO memberVO) {
+        MemberVO sessionMember = (MemberVO) session.getAttribute("member");
+        memberVO.setId(sessionMember.getId());
         memberMapper.update(memberVO);
+        session.setAttribute("member", memberVO);
         return new RedirectView("/members/my-page");
     }
 
 
     //5. 탈퇴
-    @DeleteMapping("delete")
+    @PostMapping("delete")
     public RedirectView delete(HttpSession session) {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
         memberMapper.delete(memberVO.getId());
+        session.invalidate();
         return new RedirectView("/members/login");
     }
 }

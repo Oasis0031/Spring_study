@@ -15,20 +15,18 @@
 </div>
 
 
-    <button type="button" onclick="window.location.href='/members/login'">로그아웃</button>
-    <button type="button" onclick="window.location.href='/members/update'">회원정보수정</button>
-    <button id="delete-btn" type="button">회원탈퇴</button>
+<a th:href="@{/members/logout}">
+    <button type="button">로그아웃</button>
+</a>
+
+<a th:href="@{/members/update}">
+    <button type="button">회원정보 수정</button>
+</a>
+
+<form th:action="@{/members/delete}" method="post">
+    <button type="submit">회원 탈퇴</button>
+</form>
+
 
 </body>
-<script>
-
-    const deleteBtn = document.getElementById('delete-btn');
-    deleteBtn.addEventListener('click',  () => {
-        fetch("/members/delete", {
-            "method": "DELETE",
-        })
-    })
-
-
-</script>
 </html>
