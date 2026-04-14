@@ -1,27 +1,31 @@
 package com.app.restful.service;
 
+import com.app.restful.domain.dto.MemberJoinRequestDTO;
 import com.app.restful.domain.dto.MemberResponseDTO;
+import com.app.restful.domain.dto.MemberUpdateRequestDTO;
 import com.app.restful.domain.vo.MemberVO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberService {
     // 회원가입
-    public void join(MemberVO memberVO);
+    void join(MemberJoinRequestDTO memberJoinRequestDTO);
 
     // 로그인
-    public Optional<MemberVO> login(MemberVO memberVO);
+    MemberResponseDTO login(MemberVO memberVO);
+
+    // 이메일 중복 여부 확인
+    void checkMemberEmailDuplicate(String memberEmail);
 
     // 회원 전체 조회
-    public List<MemberResponseDTO> getMemberInfoList();
+    List<MemberResponseDTO> getMemberInfoList();
 
     // 회원 정보 조회
-    public Optional<MemberResponseDTO> getMemberInfo(Long id);
+    MemberResponseDTO getMemberInfo(Long id);
 
-    // 회원 정보 변경
-    // 회원 비밀번호 변경(마이페이지)
-    // 회원 비밀번호 변경(로그인 하기 전)
+    // 회원 정보 변경 (리턴 타입을 void로 통일하여 Impl과 맞춤)
+    void updateMember(MemberUpdateRequestDTO memberUpdateRequestDTO);
+
     // 회원 탈퇴
-
+    void deleteMember(Long id);
 }
