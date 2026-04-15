@@ -9,8 +9,6 @@
     <typeAliases>
         <!-- DTO Alias -->
         <typeAlias type="com.app.restful.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
-        <typeAlias type="com.app.restful.domain.dto.MemberJoinRequestDTO" alias="MemberJoinRequestDTO"></typeAlias>
-        <typeAlias type="com.app.restful.domain.dto.MemberJoinRequestDTO" alias="MemberLoginRequestDTO"></typeAlias>
 
         <!-- VO Alias -->
         <typeAlias type="com.app.restful.domain.vo.MemberVO" alias="MemberVO"></typeAlias>

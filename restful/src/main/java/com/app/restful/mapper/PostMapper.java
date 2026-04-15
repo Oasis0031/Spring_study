@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Mapper
 public interface PostMapper {
-
-
+    
 }

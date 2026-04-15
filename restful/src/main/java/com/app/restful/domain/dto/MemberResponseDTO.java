@@ -15,24 +15,13 @@ public class MemberResponseDTO {
     private String memberEmail;
     @Schema(description = "회원 이름", example = "홍길동")
     private String memberName;
-    @Schema(description = "비밀번호", example = "1234")
-    private String memberPassword;
 
-
-    //    정적 팩토리 메서드
+//    정적 팩토리 메서드
     public static MemberResponseDTO from(MemberVO memberVO) {
         MemberResponseDTO memberResponseDTO = new MemberResponseDTO();
         memberResponseDTO.setId(memberVO.getId());
         memberResponseDTO.setMemberEmail(memberVO.getMemberEmail());
         memberResponseDTO.setMemberName(memberVO.getMemberName());
-        return memberResponseDTO;
-    }
-
-    public static MemberResponseDTO from(MemberUpdateRequestDTO memberUpdateRequestDTO) {
-        MemberResponseDTO memberResponseDTO = new MemberResponseDTO();
-        memberResponseDTO.setId(memberUpdateRequestDTO.getId());
-        memberResponseDTO.setMemberPassword(memberUpdateRequestDTO.getMemberPassword());
-        memberResponseDTO.setMemberName(memberUpdateRequestDTO.getMemberName());
         return memberResponseDTO;
     }
 }
