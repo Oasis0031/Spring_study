@@ -6,11 +6,10 @@ import com.app.restful.domain.dto.MemberUpdateRequestDTO;
 import com.app.restful.domain.vo.MemberVO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberService {
     // 회원가입
-    public void join(MemberJoinRequestDTO memberJoinRequestDTO);
+    public MemberResponseDTO join(MemberJoinRequestDTO memberJoinRequestDTO);
 
     // 로그인
     public MemberResponseDTO login(MemberVO memberVO);

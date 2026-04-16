@@ -1,9 +1,17 @@
 package com.app.restful.exception;
 
-public class PostException extends RuntimeException {
-    public PostException(){;}
+import lombok.Data;
+import org.springframework.http.HttpStatus;
 
-    public PostException(String message) {
-        super(message);
+@Data
+public class PostException extends RuntimeException {
+
+    private HttpStatus status;
+
+    public PostException(){;}
+    public PostException(String message,  HttpStatus status) {
+        super(message);this.status = status;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.app.restful.repository;
 
-import com.app.restful.domain.dto.MemberJoinRequestDTO;
+import com.app.restful.domain.dto.MemberUpdateRequestDTO;
+import com.app.restful.domain.dto.PostUpdateRequestDTO;
 import com.app.restful.domain.vo.MemberVO;
 import com.app.restful.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,6 @@ public class MemberDAO {
     public void update(MemberVO memberVO){
         memberMapper.update(memberVO);
     }
-
     // 회원 삭제
     public void delete(Long id){
         memberMapper.delete(id);

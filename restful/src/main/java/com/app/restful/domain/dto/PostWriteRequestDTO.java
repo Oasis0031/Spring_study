@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class PostWriteRequestDTO {
-    private Long id;
+//    private Long id;
     private String postTitle;
     private String postContent;
-    private String memberName;
+//  토큰에서 추출  private String memberName;
     private Long postReadCount;
 }
