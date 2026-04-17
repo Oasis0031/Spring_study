@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시판 목록</title>
+</head>
+<body>
+<th:block th:if="${#lists.size(posts) != 0}">
+    <table border="1">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
+        </tr>
+        <th:block th:each="post: ${posts}">
+            <tr th:object="${post}">
+                <td th:text="*{id}"></td>
+                <td>
+                    <a th:href="@{/posts/read(id=*{id})}" th:text="*{postTitle}"></a>
+                </td>
+                <td th:text="*{postContent}"></td>
+                <td th:text="*{postReadCount}"></td>
+            </tr>
+        </th:block>
+    </table>
+</th:block>
+<th:block th:unless="${#lists.size(posts) != 0}">
+    <h1>게시글이 없습니다.</h1>
+</th:block>
+</body>
+</html>
