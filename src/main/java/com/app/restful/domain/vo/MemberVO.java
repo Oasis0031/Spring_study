@@ -32,3 +32,15 @@ public class MemberVO implements Serializable {
         return memberVO;
     }
 }
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6

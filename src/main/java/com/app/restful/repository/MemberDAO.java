@@ -19,7 +19,11 @@ public class MemberDAO {
 
     // 회원 추가
     public void save(MemberVO memberVO){
+<<<<<<< HEAD
         memberMapper.insert(memberVO);
+=======
+       memberMapper.insert(memberVO);
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
     }
 
     // 이메일 유무 검사

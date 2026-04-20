@@ -28,4 +28,10 @@ spring:
       allowed-origins: "http://localhost:3000"
       allowed-methods: "*"
       allowed-headers: "*"
+<<<<<<< HEAD
       allow-credentials: "true" # 쿠키 사용 허용
+=======
+      allow-credentials: "true" # 쿠키 사용 허용
+
+
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6

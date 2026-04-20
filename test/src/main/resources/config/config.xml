@@ -7,23 +7,11 @@
     </settings>
 
     <typeAliases>
-<<<<<<< HEAD
-        <!-- dto alias -->
-        <typeAlias type="com.app.restful.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
-        <typeAlias type="com.app.restful.domain.dto.PostCreateRequestDTO" alias="PostCreateRequestDTO"></typeAlias>
-        <typeAlias type="com.app.restful.domain.dto.PostUpdateRequestDTO" alias="PostUpdateRequestDTO"></typeAlias>
-
-        <!-- vo alias -->
-        <typeAlias type="com.app.restful.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
-        <typeAlias type="com.app.restful.domain.vo.PostVO" alias="PostVO"></typeAlias>
-
-=======
         <!-- DTO Alias -->
         <typeAlias type="com.app.restful.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
 
         <!-- VO Alias -->
         <typeAlias type="com.app.restful.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
         <typeAlias type="com.app.restful.domain.vo.PostVO" alias="PostVO"></typeAlias>
->>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
     </typeAliases>
 </configuration>

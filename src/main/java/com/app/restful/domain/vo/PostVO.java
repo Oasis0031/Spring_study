@@ -11,6 +11,7 @@ public class PostVO {
     private Long id;
     private String postTitle;
     private String postContent;
+<<<<<<< HEAD
     private Long memberId;
     private int postReadCount;
 
@@ -30,3 +31,23 @@ public class PostVO {
         return postVO;
     }
 }
+=======
+    private Long PostReadCount;
+    private Long memberId;
+
+    // 정적 팩토리 메서드
+    public static PostVO from(PostUpdateRequestDTO postUpdateRequestDTO){
+        PostVO postVO = new PostVO();
+        postVO.setPostTitle(postUpdateRequestDTO.getPostTitle());
+        postVO.setPostContent(postUpdateRequestDTO.getPostContent());
+        return postVO;
+    }
+
+    public static PostVO from(PostCreateRequestDTO postCreateRequestDTO){
+        PostVO postVO = new PostVO();
+        postVO.setPostTitle(postCreateRequestDTO.getPostTitle());
+        postVO.setPostContent(postCreateRequestDTO.getPostContent());
+        return postVO;
+    }
+}
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
