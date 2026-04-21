@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+// 정석은 throw를 service에서 던짐!
+// Optional이 없는 상태로 리턴해야함!
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -23,57 +27,60 @@ public class MemberServiceImpl implements MemberService {
     private final PostDAO postDAO;
 
     @Override
-    public MemberResponseDTO join(MemberJoinRequestDTO memberJoinRequestDTO) {
-        // 1. 이메일 중복 여부 확인
+    public void join(MemberJoinRequestDTO memberJoinRequestDTO) {
+//      이메일 중복 여부 확인
+//      회원 정보 추가 할 수 있도록 코드 리팩토링
         this.checkMemberEmailDuplicate(memberJoinRequestDTO.getMemberEmail());
-        // 2. DTO -> VO 변환 후 저장
+//      서비스 단에서 DTO -> VO 옮겨담는다
         memberDAO.save(MemberVO.from(memberJoinRequestDTO));
-        return null;
     }
 
+    // 이메일 중복 여부 확인
     @Override
     public void checkMemberEmailDuplicate(String memberEmail) {
-        if (memberDAO.existMemberEmail(memberEmail) > 0) {
+        if(memberDAO.existMemberEmail(memberEmail) > 0){
             throw new MemberException("이메일이 존재합니다.", HttpStatus.CONFLICT);
         }
     }
 
     @Override
     public List<MemberResponseDTO> getMemberInfoList() {
-        return memberDAO.findAll().stream()
-                .map(MemberResponseDTO::from)
-                .toList();
+        return memberDAO.findAll().stream().map(MemberResponseDTO::from).toList();
     }
 
+    // 로그인 서비스
+    // 아이디 또는 비밀번호가 일치않으면 throw!
+    // 화면에 비밀번호 X -> ResponseDTO
+    // 아이디와 비밀번호가 일치하는 회원정보를 화면으로 응답
     @Override
     public MemberResponseDTO login(MemberVO memberVO) {
-        return memberDAO.findByMemberEmailAndMemberPassword(memberVO)
+        return memberDAO
+                .findByMemberEmailAndMemberPassword(memberVO)
                 .map(MemberResponseDTO::from)
-                // 수정: orElseThrow 내부에서는 throw 문을 작성하는 것이 아니라 예외 객체만 생성합니다.
-                .orElseThrow(() -> new MemberException("아이디 또는 비밀번호를 확인하세요.", HttpStatus.UNAUTHORIZED));
+                .orElseThrow(() -> {throw new MemberException("아이디 또는 비밀번호를 확인하세요.", HttpStatus.UNAUTHORIZED); });
     }
 
+    // 회원 정보 조회
     @Override
     public MemberResponseDTO getMemberInfo(Long id) {
-        return memberDAO.findById(id)
+//        회원 비밀번호를 제거 후 화면에 출력
+        return memberDAO
+                .findById(id)
                 .map(MemberResponseDTO::from)
-                // 수정: 불필요한 중괄호와 throw 키워드 중복 제거
-                .orElseThrow(() -> new MemberException("회원을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> { throw new MemberException("회원을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);});
     }
 
+    // 회원정보 수정
     @Override
     public void updateMember(MemberUpdateRequestDTO memberUpdateRequestDTO) {
-        // MemberVO.from(memberUpdateRequestDTO)의 반환 타입이 MemberVO인지 확인 필수!
         memberDAO.update(MemberVO.from(memberUpdateRequestDTO));
     }
 
+    // 회원탈퇴
     @Override
     public void withdraw(Long id) {
-        // 1. 참조하고 있는 게시글부터 삭제 (작성자 ID 기준)
-        // postDAO의 메서드명이 deleteByMemberId인지 확인하세요.
+        // 참조하는 POST 게시판의 삭제
         postDAO.deleteByMemberId(id);
-
-        // 2. 회원 삭제
         memberDAO.delete(id);
     }
 }

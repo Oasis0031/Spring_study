@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
-@Schema(description = "응답 객체")
+@Schema(description = "서버 응답 DTO")
 public class ApiResponseDTO<T> {
-    @Schema(description = "응답 메시지", example = "조회 성공", required = true)
+    @Schema(description = "응답 메세지", example = "조회 성공", required = true)
     private String message;
+    @Schema(description = "응답 데이터")
     private T data;
 
     public static<T> ApiResponseDTO of(String message){

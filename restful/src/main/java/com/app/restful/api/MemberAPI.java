@@ -96,8 +96,8 @@ public class MemberAPI {
     )
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO> updateMember(
-            @RequestBody MemberUpdateRequestDTO memberUpdateRequestDTO,
-            @PathVariable Long id
+        @RequestBody MemberUpdateRequestDTO memberUpdateRequestDTO,
+        @PathVariable Long id
     ){
         memberUpdateRequestDTO.setId(id);
         memberService.updateMember(memberUpdateRequestDTO);
@@ -106,7 +106,7 @@ public class MemberAPI {
 
     // 삭제 컨트롤러
     @Operation(summary = "회원 탈퇴 서비스", description = "회원 아이디로 회원 탈퇴해주는 서비스")
-    @ApiResponse(responseCode = "204", description = "회원 탈퇴 완료")
+    @ApiResponse(responseCode = "200", description = "회원 탈퇴 완료")
     @ApiResponse(responseCode = "401", description = "토큰 없음")
     @ApiResponse(responseCode = "403", description = "권한 없음")
     @Parameter(
@@ -120,7 +120,7 @@ public class MemberAPI {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDTO> withdraw(@PathVariable Long id){
         memberService.withdraw(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponseDTO.of("회원 탈퇴 완료"));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("회원 탈퇴 완료"));
     }
 
 

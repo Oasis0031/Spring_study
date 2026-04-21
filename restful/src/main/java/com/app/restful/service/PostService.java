@@ -3,25 +3,23 @@ package com.app.restful.service;
 import com.app.restful.domain.dto.PostCreateRequestDTO;
 import com.app.restful.domain.dto.PostDTO;
 import com.app.restful.domain.dto.PostUpdateRequestDTO;
+import com.app.restful.domain.vo.PostVO;
 
 import java.util.List;
 
 public interface PostService {
-    // 게시글 전체 조회 (정렬 조건 포함)
-    List<PostDTO> getPostList(String order);
 
-    // 게시글 상세 조회
-    PostDTO getPostDetail(Long id);
-
+    // 게시글 전체 목록 조회
+    public List<PostDTO> getPostList(String order);
+    // 게시글 상세 보기
+    public PostDTO getPostDetail(Long id);
     // 게시글 작성
-    void createPost(PostCreateRequestDTO postCreateRequestDTO, Long memberId);
-
+    public void createPost(PostCreateRequestDTO postCreateRequestDTO, Long memberId);
     // 게시글 수정
-    void modifyPost(PostUpdateRequestDTO postUpdateRequestDTO, Long id);
-
+    public void modifyPost(PostUpdateRequestDTO postUpdateRequestDTO, Long id);
     // 게시글 삭제
-    void remove(Long id);
+    public void remove(Long id);
+    // 탈퇴시 게시글 삭제
+    public void removeByMemberId(Long memberId);
 
-    // 회원 탈퇴 시 해당 회원의 게시글 삭제
-    void removeByMemberId(Long memberId);
 }

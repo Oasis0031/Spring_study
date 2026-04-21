@@ -1,0 +1,22 @@
+package com.app.test.domain.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor @AllArgsConstructor
+@Schema(description = "응답 객체")
+public class ApiResponseDTO<T> {
+    @Schema(description = "응답 메시지", example = "조회 성공", required = true)
+    private String message;
+    private T data;
+
+    public static <T> ApiResponseDTO<T> of(String message) { return new ApiResponseDTO<>(message, null); }
+
+    public static <T> ApiResponseDTO<T> of(String message, T data) {
+        return new ApiResponseDTO<>(message, data);
+    }
+
+}

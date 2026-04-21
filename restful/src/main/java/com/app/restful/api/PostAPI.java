@@ -44,7 +44,7 @@ public class PostAPI {
 //        .body: 응답 데이터 -> ApiResponseDTO
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponseDTO
-                        .of("게시글 목록 조회 성공", postList));
+                .of("게시글 목록 조회 성공", postList));
     }
 
     // 게시글 단일 조회
@@ -97,7 +97,7 @@ public class PostAPI {
 
     // 게시글 삭제
     @Operation(summary = "게시판 삭제", description = "해당 번호의 게시글 삭제해 주는 서비스")
-    @ApiResponse(responseCode = "204", description = "게시글 삭제 완료")
+    @ApiResponse(responseCode = "200", description = "게시글 삭제 완료")
     @ApiResponse(responseCode = "404", description = "게시글 없음")
     @Parameter(
             name = "id",
@@ -109,7 +109,7 @@ public class PostAPI {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDTO> removePost(@PathVariable Long id){
         postService.remove(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponseDTO.of("게시물 삭제 완료"));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("게시물 삭제 완료"));
     }
 
 }

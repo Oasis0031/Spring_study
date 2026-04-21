@@ -8,10 +8,10 @@
 
     <typeAliases>
         <!-- DTO Alias -->
-        <typeAlias type="com.app.restful.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
+        <typeAlias type="com.app.test.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
 
         <!-- VO Alias -->
-        <typeAlias type="com.app.restful.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
-        <typeAlias type="com.app.restful.domain.vo.PostVO" alias="PostVO"></typeAlias>
+        <typeAlias type="com.app.test.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
+        <typeAlias type="com.app.test.domain.vo.PostVO" alias="PostVO"></typeAlias>
     </typeAliases>
 </configuration>
