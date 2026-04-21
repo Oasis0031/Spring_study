@@ -11,6 +11,24 @@ import java.util.Optional;
 public interface MemberMapper {
     // 회원 추가
     public void insert(MemberVO memberVO);
+<<<<<<< HEAD
+
+    // 회원 이메일 유무 조회
+    public int existMemberEmail(String memberEmail);
+
+    // 회원 전체 조회
+    public List<MemberVO> selectAll();
+
+    // 회원 단일 조회(ID)
+    public MemberVO selectById(Long id);
+
+    // 회원 단일 조회(Email, Password)
+    public MemberVO selectByMemberEmailAndMemberPassword(MemberVO memberVO);
+
+    // 회원 수정
+    public void update(MemberVO memberVO);
+
+=======
     // 회원 이메일 유무 조회
     public int existMemberEmail(String memberEmail);
     // 회원 전체 조회
@@ -21,6 +39,7 @@ public interface MemberMapper {
     public MemberVO selectByMemberEmailAndMemberPassword(MemberVO memberVO);
     // 회원 수정
     public void update(MemberVO memberVO);
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
     // 회원 삭제
     public void delete(Long id);
 }

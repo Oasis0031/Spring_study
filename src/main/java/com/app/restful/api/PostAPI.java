@@ -44,7 +44,11 @@ public class PostAPI {
 //        .body: 응답 데이터 -> ApiResponseDTO
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponseDTO
+<<<<<<< HEAD
+                        .of("게시글 목록 조회 성공", postList));
+=======
                 .of("게시글 목록 조회 성공", postList));
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
     }
 
     // 게시글 단일 조회
@@ -98,6 +102,10 @@ public class PostAPI {
     // 게시글 삭제
     @Operation(summary = "게시판 삭제", description = "해당 번호의 게시글 삭제해 주는 서비스")
     @ApiResponse(responseCode = "200", description = "게시글 삭제 완료")
+<<<<<<< HEAD
+    @ApiResponse(responseCode = "401", description = "토큰 없음")
+=======
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
     @ApiResponse(responseCode = "404", description = "게시글 없음")
     @Parameter(
             name = "id",
@@ -109,7 +117,11 @@ public class PostAPI {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDTO> removePost(@PathVariable Long id){
         postService.remove(id);
+<<<<<<< HEAD
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponseDTO.of("게시물 삭제 완료"));
+=======
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("게시물 삭제 완료"));
+>>>>>>> b308ed9b6a7618978f876e6e723bb1c4f40d5dd6
     }
 
 }

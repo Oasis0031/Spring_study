@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @Slf4j
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 public class sampleServiceTests {
 
     @Autowired
@@ -15,7 +15,8 @@ public class sampleServiceTests {
 
     @Test
     public void beforeTest(){
-        log.info("result : {}" , sampleService.doAdd("1","2"));
-
+        log.info("result: {}", sampleService.doAdd("ㄱ", "2"));
     }
+
+
 }

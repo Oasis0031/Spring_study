@@ -7,9 +7,6 @@ import java.lang.annotation.Target;
 
 // Target: 어디에 붙일 수 있는 어노테이션
 @Target(ElementType.METHOD)
-// Retention: 어느 시점에 실행이 될 것인가(주입 시점)
+// Retention: 어느 시점에 실행이 될 것인가(주입)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LogStatus {;
-
-
-}
+public @interface LogStatus {;}
