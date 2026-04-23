@@ -1,4 +1,4 @@
-package com.app.oath.config;
+package com.app.oauth.config;
 
 
 import org.springframework.context.annotation.Bean;

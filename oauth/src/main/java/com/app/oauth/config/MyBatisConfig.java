@@ -1,4 +1,4 @@
-package com.app.oath.config;
+package com.app.oauth.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

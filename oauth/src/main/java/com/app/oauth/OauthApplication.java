@@ -1,13 +1,13 @@
-package com.app.oath;
+package com.app.oauth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OathApplication {
+public class OauthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OathApplication.class, args);
+        SpringApplication.run(OauthApplication.class, args);
     }
 
 }

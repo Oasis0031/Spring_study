@@ -1,17 +1,18 @@
-package com.app.oath.domain.vo;
-
+package com.app.oauth.domain.dto;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-@Data
 @Component
-public class OauthMemberVO {
+@Data
+public class MemberDTO {
     private Long id;
     private String memberEmail;
     private String memberPassword;
     private String memberPicture;
     private String memberName;
     private String memberNickname;
-    private String memberProvider;
+    private String socialMemberProviderId;
+    private String socialMemberProvider;
+    private Long memberId;
 }
