@@ -13,6 +13,9 @@ public class MemberServiceTests {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private AuthService authService;
+
     @Test
     public void joinTest(){
         MemberDTO memberDTO = new MemberDTO();
@@ -31,7 +34,7 @@ public class MemberServiceTests {
         memberDTO.setMemberName("홍길동");
         memberDTO.setMemberNickname("개복치 홍길동");
 
-        log.info("{}", memberService.login(memberDTO));
+        log.info("{}", authService.login(memberDTO));
     }
 
 

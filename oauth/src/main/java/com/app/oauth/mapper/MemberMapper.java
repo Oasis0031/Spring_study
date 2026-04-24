@@ -9,7 +9,7 @@ public interface MemberMapper {
 //    회원 추가
     public void insert(MemberVO memberVO);
 //    회원 조회(ID)
-    public MemberVO select(Long id);
+    public MemberDTO select(Long id);
 //    회원 조회(memberEmail)
     public MemberDTO selectByMemberEmail(String memberEmail);
 //    회원 가입 여부 조회(memberEmail)

@@ -18,11 +18,9 @@ public class JwtTokenUtil {
     // Access 토큰 생성
     public String generateAccessToken(Map<String, String> claims) {
         // 평균 1분 ~ 5분(수업 테스트용 24시간)
-        long expirationTimeInMillis = 1000 * 60 * 60 * 24;
+//        long expirationTimeInMillis = 1000 * 60 * 60 * 24;
+        Long expirationTimeInMillis = 1000L * 10;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
-
-        // JWT를 발급한 곳
-        claims.put("issuer", "세환");
 
         return Jwts
                 .builder()
@@ -36,11 +34,8 @@ public class JwtTokenUtil {
     // generateRefreshToken
     public String generateRefreshToken(Map<String, String> claims) {
         // (평균 1주일 ~ 한 달)
-        long expirationTimeInMillis = 1000 * 60 * 60 * 24 * 30;
+        Long expirationTimeInMillis = 1000L * 60 * 60 * 24 * 30;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
-
-        // JWT를 발급한 곳
-        claims.put("issuer", "세환");
 
         return Jwts
                 .builder()
@@ -54,6 +49,7 @@ public class JwtTokenUtil {
 
     // 토큰 파싱(token -> claim)
     public Claims parseToken(String token) {
+        log.info("token : {}", token);
         try {
             return Jwts.parser()
                     .setSigningKey(secretKey)
