@@ -1,6 +1,6 @@
 package com.app.oauth.domain.dto.response;
 
-import com.app.oauth.domain.dto.MemberDTO;
+
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +16,9 @@ public class MemberResponseDTO {
     private String socialMemberProvider;
     private Long memberId;
 
-    public static MemberResponseDTO from(MemberDTO memberDTO){
+    public static MemberResponseDTO from(MemberDTO memberDTO) {
         MemberResponseDTO memberResponseDTO = new MemberResponseDTO();
+
         memberResponseDTO.setId(memberDTO.getId());
         memberResponseDTO.setMemberEmail(memberDTO.getMemberEmail());
         memberResponseDTO.setMemberPicture(memberDTO.getMemberPicture());
@@ -28,5 +29,4 @@ public class MemberResponseDTO {
         memberResponseDTO.setMemberId(memberDTO.getMemberId());
         return memberResponseDTO;
     }
-
 }

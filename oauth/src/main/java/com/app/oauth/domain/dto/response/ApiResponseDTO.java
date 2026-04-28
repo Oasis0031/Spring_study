@@ -3,37 +3,40 @@ package com.app.oauth.domain.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-// 최종 프로젝트 사용
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Component
+@AllArgsConstructor
 public class ApiResponseDTO<T> {
     private boolean success;
     private String message;
     private T data;
-
-    public ApiResponseDTO(String message) {
-        this.message = message;
-    }
 
     public ApiResponseDTO(boolean success, String message) {
         this.success = success;
         this.message = message;
     }
 
+    // 1. 메시지만 받는 생성자 (실패 시 주로 사용)
+    public ApiResponseDTO(String message) {
+        this.success = false; // 예외 상황에서 호출될 가능성이 높으므로 기본 false
+        this.message = message;
+    }
+
+    // 2. 메시지와 데이터를 받는 생성자 (성공 시 주로 사용)
     public ApiResponseDTO(String message, T data) {
+        this.success = true;
         this.message = message;
         this.data = data;
     }
 
-    public static <T>ApiResponseDTO<T> of(String message){
+    // 3. ExceptionHandler에서 사용하는 정적 팩토리 메서드
+    public static <T> ApiResponseDTO<T> of(String message) {
         return new ApiResponseDTO<>(message);
     }
-    public static <T>ApiResponseDTO<T> of(String message, T data){
+
+    // 4. 성공 시 데이터를 함께 보내는 정적 팩토리 메서드
+    public static <T> ApiResponseDTO<T> of(String message, T data) {
         return new ApiResponseDTO<>(message, data);
     }
-
 }

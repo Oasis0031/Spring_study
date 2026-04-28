@@ -1,7 +1,6 @@
 package com.app.oauth.service;
 
-import com.app.oauth.domain.dto.MemberDTO;
-import com.app.oauth.domain.vo.MemberVO;
+import com.app.oauth.domain.dto.response.MemberDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

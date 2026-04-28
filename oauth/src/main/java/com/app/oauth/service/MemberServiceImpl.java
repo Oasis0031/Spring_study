@@ -1,8 +1,8 @@
 package com.app.oauth.service;
 
+
 import com.app.oauth.domain.dto.response.ApiResponseDTO;
-import com.app.oauth.domain.dto.JwtTokenDTO;
-import com.app.oauth.domain.dto.MemberDTO;
+import com.app.oauth.domain.dto.response.MemberDTO;
 import com.app.oauth.domain.dto.response.MemberResponseDTO;
 import com.app.oauth.domain.vo.MemberVO;
 import com.app.oauth.domain.vo.SocialMemberVO;
@@ -32,13 +32,13 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
-//    회원 가입
+    //    회원 가입
     @Override
     public ApiResponseDTO join(MemberDTO memberDTO) {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
         Map<String, Object> claims = new HashMap<>();
 
-        if(memberDAO.existsMemberByMemberEmail(memberDTO.getMemberEmail())){
+        if(memberDAO.existsMemberByMemberEmailAndSocialMemberProvider(memberDTO)){
             throw new MemberException("중복된 이메일 입니다.", HttpStatus.BAD_REQUEST);
         }
 

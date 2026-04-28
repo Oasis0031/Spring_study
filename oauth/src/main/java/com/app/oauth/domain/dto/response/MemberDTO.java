@@ -1,4 +1,4 @@
-package com.app.oauth.domain.dto;
+package com.app.oauth.domain.dto.response;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -15,4 +15,8 @@ public class MemberDTO {
     private String socialMemberProviderId;
     private String socialMemberProvider;
     private Long memberId;
+
+    {
+        socialMemberProvider = "local";
+    }
 }

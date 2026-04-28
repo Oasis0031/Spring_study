@@ -1,8 +1,7 @@
 package com.app.oauth.service;
 
 import com.app.oauth.domain.dto.response.ApiResponseDTO;
-import com.app.oauth.domain.dto.JwtTokenDTO;
-import com.app.oauth.domain.dto.MemberDTO;
+import com.app.oauth.domain.dto.response.MemberDTO;
 
 public interface MemberService {
     // 회원가입

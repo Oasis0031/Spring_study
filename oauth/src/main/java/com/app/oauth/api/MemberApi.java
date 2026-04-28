@@ -1,10 +1,9 @@
 package com.app.oauth.api;
 
 import com.app.oauth.domain.dto.response.ApiResponseDTO;
-import com.app.oauth.domain.dto.MemberDTO;
+import com.app.oauth.domain.dto.response.MemberDTO;
 import com.app.oauth.service.MemberService;
 import com.app.oauth.util.JwtTokenUtil;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +30,10 @@ public class MemberApi {
     ){
         return ResponseEntity.status(HttpStatus.OK).body(memberService.me(accessToken));
     }
+
+
+
+
 
 }
 
