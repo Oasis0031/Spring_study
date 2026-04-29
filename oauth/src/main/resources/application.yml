@@ -3,9 +3,24 @@ server:
 
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "oasis0031@gmail.com"
+    password: "aqzv rcdj onkj tljf"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+            protocols: TLSv1.2
   devtools:
     restart:
       exclude: "**/dto/**"
+
 
   data:
     redis:
@@ -97,3 +112,7 @@ jwt:
   token-blacklist-prefix: "blacklist:"
   refresh-blacklist-prefix: "refresh:"
 
+coolsms:
+  api:
+    key: "NCSAZZ6GBMH50UIJ"
+    secret: "K1CAS9JE6KHWRCKZI4Y6XCPZ2SGCFRWR"

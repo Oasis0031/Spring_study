@@ -1,5 +1,6 @@
 package com.app.oauth.api;
 
+import com.app.oauth.domain.dto.response.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,6 @@ public class MyPageApi {
 
     @PostMapping("/my-page-test")
     public void test(Authentication authentication){
-        log.info("test", authentication.getPrincipal().toString());
+        log.info("test {}", (MemberDTO)authentication.getPrincipal());
     }
 }
