@@ -1,8 +1,7 @@
 package com.app.oauth.handler;
 
-
-import com.app.oauth.domain.dto.response.JwtTokenDTO;
-import com.app.oauth.domain.dto.response.MemberDTO;
+import com.app.oauth.domain.dto.JwtTokenDTO;
+import com.app.oauth.domain.dto.MemberDTO;
 import com.app.oauth.service.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class Oauth2LogInSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class Oauth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AuthService authService;
 
@@ -36,8 +35,6 @@ public class Oauth2LogInSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             OAuth2User oauth2User = authToken.getPrincipal();
             Map<String, Object> attributes = oauth2User.getAttributes();
             String socialMemberProvider = authToken.getAuthorizedClientRegistrationId();
-            log.info("socialMemberProvider : {}", socialMemberProvider);
-            log.info("attributes : {}", attributes);
 
             String memberEmail = null;
             String socialMemberProviderId = null;
@@ -69,7 +66,6 @@ public class Oauth2LogInSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             memberDTO.setSocialMemberProvider(socialMemberProvider);
 
             JwtTokenDTO jwtTokenDTO = authService.socialLogin(memberDTO);
-            log.info("jwtTokenDTO : {}", jwtTokenDTO);
 
             ResponseCookie accessTokenCookie = ResponseCookie
                     .from("accessToken", jwtTokenDTO.getAccessToken())

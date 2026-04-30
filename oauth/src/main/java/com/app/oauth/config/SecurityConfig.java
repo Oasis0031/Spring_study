@@ -1,10 +1,8 @@
 package com.app.oauth.config;
 
-
-import com.app.oauth.domain.dto.response.JwtTokenDTO;
+import com.app.oauth.domain.dto.JwtTokenDTO;
 import com.app.oauth.filter.JwtAuthenticationFilter;
-import com.app.oauth.handler.JwtAuthenticationEntryPoint;
-import com.app.oauth.handler.Oauth2LogInSuccessHandler;
+import com.app.oauth.handler.Oauth2LoginSuccessHandler;
 import com.app.oauth.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final Oauth2LogInSuccessHandler oauth2LoginSuccessHandler;
+    private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
     private final AuthService authService;
 
     @Bean
@@ -48,73 +46,74 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception{
 
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable()) // 시큐리티 검증 경로
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .anonymous(anonymous -> anonymous.disable())
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/private/**").authenticated() // "/private" -> 보호된 라우트
-                        .anyRequest().permitAll() // 위 경로를 제외한 나머지 경로는 허용된 라우트
-                ) // 모든 경로 해제
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(oauth2LoginSuccessHandler))
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("http://localhost:3000/member/login")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            // 세션을 비우든, 토큰을 삭제하는 코드 들
-                            HttpSession session = request.getSession(false);
-                            if(session != null) {
-                                session.invalidate();
-                            }
-                            //로그아웃은 토큰을 블랙리스트에 등록하는 서비스
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable()) // 시큐리티 검증 경로
+            .sessionManagement(session -> session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .anonymous(anonymous -> anonymous.disable())
+            .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers("/private/**").authenticated() // "/private" -> 보호된 라우트
+                    .anyRequest().permitAll() // 위 경로를 제외한 나머지 경로는 허용된 라우트
+            ) // 모든 경로 해제
+            .exceptionHandling(exception -> exception
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint))
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .oauth2Login(oauth2 -> oauth2
+                    .successHandler(oauth2LoginSuccessHandler))
+            .logout(logout -> logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("http://localhost:3000/member/login")
+                    .logoutSuccessHandler((request, response, authentication) -> {
+                        // 세션을 비우든, 토큰을 삭제하는 코드 들
+                        HttpSession session = request.getSession(false);
+                        if(session != null) {
+                            session.invalidate();
+                        }
+                        // 로그아웃 서비스 -> 토큰 블랙리스트에 등록
 
-                            JwtTokenDTO jwtTokenDTO = new JwtTokenDTO();
+//                        authService.login();
+                        JwtTokenDTO jwtTokenDTO = new JwtTokenDTO();
 
-                            if(request.getCookies() != null) {
-                                for(Cookie cookie : request.getCookies()) {
-                                    if("refreshToken".equals(cookie.getName())) {
-                                        jwtTokenDTO.setRefreshToken(cookie.getValue());
-                                    }
-                                    if ("accessToken".equals(cookie.getName())) {
-                                        jwtTokenDTO.setAccessToken(cookie.getValue());
-                                    }
+                        if(request.getCookies() != null) {
+                            for(Cookie cookie : request.getCookies()) {
+                                if("refreshToken".equals(cookie.getName())) {
+                                    jwtTokenDTO.setRefreshToken(cookie.getValue());
+                                }
+                                if ("accessToken".equals(cookie.getName())) {
+                                    jwtTokenDTO.setAccessToken(cookie.getValue());
                                 }
                             }
+                        }
 
-                            authService.logout(jwtTokenDTO);
+                        authService.logout(jwtTokenDTO);
 
-                            // refreshToken  삭제
-                            ResponseCookie refreshTokenCookie = ResponseCookie
-                                    .from("refreshToken", jwtTokenDTO.getRefreshToken())
-                                    .httpOnly(true) // XSS 공격 차단
-                                    .sameSite("Lax") // CSRF 공격 차단
-                                    .path("/")
-                                    .secure(false) // 개발 환경 false, 배포 환경 true (http <-> https)
-                                    .maxAge(0) // 쿠키 만료 기간
-                                    .build();
+//                        freshToken 삭제
+                        ResponseCookie refreshTokenCookie = ResponseCookie
+                                .from("refreshToken", null)
+                                .httpOnly(true) // XSS 공격 차단
+                                .sameSite("Lax") // CSRF 공격 차단
+                                .path("/")
+                                .secure(false) // 개발 환경 false, 배포 환경 true (http <-> https)
+                                .maxAge(0) // 쿠키 만료 기간
+                                .build();
 
-                            // accessToken  삭제
-                            ResponseCookie accessTokenCookie = ResponseCookie
-                                    .from("accessToken", jwtTokenDTO.getAccessToken())
-                                    .httpOnly(true) // XSS 공격 차단
-                                    .sameSite("Lax") // CSRF 공격 차단
-                                    .path("/")
-                                    .secure(false) // 개발 환경 false, 배포 환경 true (http <-> https)
-                                    .maxAge(0) // 쿠키 만료 기간
-                                    .build();
+                        // access Token 삭제
+                        ResponseCookie accessTokenCookie = ResponseCookie
+                                .from("accessToken", null)
+                                .httpOnly(true) // XSS 공격 차단
+                                .sameSite("Lax") // CSRF 공격 차단
+                                .path("/")
+                                .secure(false) // 개발 환경 false, 배포 환경 true (http <-> https)
+                                .maxAge(0) // 쿠키 만료 기간
+                                .build();
 
-                            response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
-                            response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+                        response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+                        response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
 
-                            response.sendRedirect("http://localhost:3000/member/login");
-                        })
-                        .permitAll()
-                );
+                        response.sendRedirect("http://localhost:3000/member/login");
+                    })
+                    .permitAll()
+            );
 
         return http.build();
     }

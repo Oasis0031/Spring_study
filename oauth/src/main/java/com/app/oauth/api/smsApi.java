@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/sms")
 @RequiredArgsConstructor
-public class smsApi {
+public class SmsApi {
 
     private final AuthService authService;
 
@@ -26,9 +26,9 @@ public class smsApi {
         String memberPhone = verificationRequestDTO.getMemberPhone();
         ApiResponseDTO apiResponseDTO = null;
         if(authService.sendMemberPhoneVerificationCode(memberPhone)){
-            apiResponseDTO = ApiResponseDTO.of("메세지가 발송되었습니다.", true);
+            apiResponseDTO = ApiResponseDTO.of(true, "메세지가 발송되었습니다.");
         }else {
-            apiResponseDTO = ApiResponseDTO.of("휴대폰 번호를 확인해주세요.", false);
+            apiResponseDTO = ApiResponseDTO.of(false, "휴대폰 번호를 확인해주세요.");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponseDTO);
@@ -43,44 +43,13 @@ public class smsApi {
         String code = verificationRequestDTO.getCode();
         ApiResponseDTO apiResponseDTO = null;
         if(authService.verifyMemberPhoneVerificationCode(memberPhone, code)){
-            apiResponseDTO = ApiResponseDTO.of("인증이 완료되었습니다.",true );
+            apiResponseDTO = ApiResponseDTO.of(true, "인증이 완료되었습니다.");
         }else{
-            apiResponseDTO = ApiResponseDTO.of("인증번호를 확인해주세요.", false );
+            apiResponseDTO = ApiResponseDTO.of(false, "인증번호를 확인해주세요.");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponseDTO);
     }
 
     // 이메일 전송
-    @PostMapping("/email/verification-code")
-    public ResponseEntity<ApiResponseDTO> sendMemberEmailVerificationCode(
-            @RequestBody VerificationRequestDTO verificationRequestDTO
-    ){
-        String memberEmail = verificationRequestDTO.getMemberEmail();
-        ApiResponseDTO apiResponseDTO = null;
-        if(authService.sendMemberEmailVerificationCode(memberEmail)){
-            apiResponseDTO = ApiResponseDTO.of("메세지가 발송되었습니다.", true);
-        }else {
-            apiResponseDTO = ApiResponseDTO.of("휴대폰 번호를 확인해주세요.", false);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponseDTO);
-    }
-
-    // 이메일 인증코드 검증
-    @PostMapping("/email/verification-code/verify")
-    public ResponseEntity<ApiResponseDTO> verifyMemberEmailVerificationCode(
-            @RequestBody VerificationRequestDTO verificationRequestDTO
-    ){
-        String memberEmail = verificationRequestDTO.getMemberEmail();
-        String code = verificationRequestDTO.getCode();
-        ApiResponseDTO apiResponseDTO = null;
-        if(authService.verifyMemberEmailVerificationCode(memberEmail, code)){
-            apiResponseDTO = ApiResponseDTO.of("인증이 완료되었습니다.",true );
-        }else{
-            apiResponseDTO = ApiResponseDTO.of("인증번호를 확인해주세요.", false );
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponseDTO);
-    }
 }

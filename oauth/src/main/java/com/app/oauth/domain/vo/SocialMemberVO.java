@@ -1,6 +1,6 @@
 package com.app.oauth.domain.vo;
 
-import com.app.oauth.domain.dto.response.MemberDTO;
+import com.app.oauth.domain.dto.MemberDTO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

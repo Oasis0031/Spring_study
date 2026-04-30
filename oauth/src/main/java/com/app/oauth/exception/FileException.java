@@ -6,14 +6,14 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @NoArgsConstructor
-public class JwtTokenException extends RuntimeException{
+public class FileException extends RuntimeException{
 
     private HttpStatus httpStatus;
 
-    public JwtTokenException(String message) {
+    public FileException(String message) {
         super(message);
     }
-    public JwtTokenException(String message, HttpStatus httpStatus) {
+    public FileException(String message, HttpStatus httpStatus) {
         super(message);
         this.httpStatus = httpStatus;
     }

@@ -8,7 +8,7 @@
 
     <typeAliases>
         <!-- DTO Alias -->
-        <typeAlias type="com.app.oauth.domain.dto.response.MemberDTO" alias="MemberDTO"></typeAlias>
+        <typeAlias type="com.app.oauth.domain.dto.MemberDTO" alias="MemberDTO"></typeAlias>
 
         <!-- VO Alias -->
         <typeAlias type="com.app.oauth.domain.vo.SocialMemberVO" alias="SocialMemberVO"></typeAlias>

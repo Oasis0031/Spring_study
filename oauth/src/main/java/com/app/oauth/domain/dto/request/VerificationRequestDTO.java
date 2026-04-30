@@ -9,6 +9,4 @@ public class VerificationRequestDTO {
     private String memberEmail;
     private String memberPhone;
     private String code;
-
-
 }

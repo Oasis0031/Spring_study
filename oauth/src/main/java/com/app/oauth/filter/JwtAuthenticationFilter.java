@@ -1,10 +1,11 @@
 package com.app.oauth.filter;
 
-
+import com.app.oauth.domain.dto.MemberDTO;
 import com.app.oauth.domain.dto.response.ApiResponseDTO;
-import com.app.oauth.domain.dto.response.MemberDTO;
+import com.app.oauth.domain.dto.response.MemberResponseDTO;
 import com.app.oauth.exception.MemberException;
 import com.app.oauth.repository.MemberDAO;
+import com.app.oauth.service.MemberService;
 import com.app.oauth.util.JwtTokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -99,7 +100,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        ApiResponseDTO apiResponseDTO = ApiResponseDTO.of(message, false);
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.of(false, message);
         String json = objectMapper.writeValueAsString(apiResponseDTO);
         response.getWriter().write(json);
         response.getWriter().flush();

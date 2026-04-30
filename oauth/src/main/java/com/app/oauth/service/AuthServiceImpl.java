@@ -1,7 +1,7 @@
 package com.app.oauth.service;
 
-import com.app.oauth.domain.dto.response.JwtTokenDTO;
-import com.app.oauth.domain.dto.response.MemberDTO;
+import com.app.oauth.domain.dto.JwtTokenDTO;
+import com.app.oauth.domain.dto.MemberDTO;
 import com.app.oauth.domain.vo.MemberVO;
 import com.app.oauth.domain.vo.SocialMemberVO;
 import com.app.oauth.exception.JwtTokenException;
@@ -11,20 +11,19 @@ import com.app.oauth.repository.SocialMemberDAO;
 import com.app.oauth.util.AuthCodeGenerator;
 import com.app.oauth.util.JwtTokenUtil;
 import com.app.oauth.util.SmsUtil;
-import jakarta.mail.internet.MimeMessage;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -32,8 +31,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-
-    private final JavaMailSenderImpl mailSender;
 
     @Value("${jwt.token-blacklist-prefix}")
     private String BLACKLIST_TOKEN_PREFIX;
@@ -45,8 +42,7 @@ public class AuthServiceImpl implements AuthService {
     private final SocialMemberDAO socialMemberDAO;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
-    // RedisConfig 설정에 맞춰 String, String으로 타입 일치
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate redisTemplate;
     private final SmsUtil smsUtil;
 
     //    일반 로그인
@@ -55,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
     public JwtTokenDTO login(MemberDTO memberDTO) {
         // 사용자가 맞는지 (이메일, 비밀번호, 프로바이더(local)
 
-        // early return
+        // elary return
         MemberVO memberVO = MemberVO.from(memberDTO);
         log.info("memberDTO: {}", memberDTO);
         // 회원 유무 검사
@@ -131,18 +127,22 @@ public class AuthServiceImpl implements AuthService {
         jwtTokenDTO.setAccessToken(accessToken);
         jwtTokenDTO.setRefreshToken(refreshToken);
 
+        // redis에 토큰 저장
+        saveRefreshToken(jwtTokenDTO);
+
         return jwtTokenDTO;
     }
 
-    //실무에서는 Access Token을 받는 것이 관례
+    // 실무에서는 Access Token을 받는것이 관례
     @Override
     public void logout(JwtTokenDTO jwtTokenDTO) {
-        try {
-            if(jwtTokenDTO.getRefreshToken() != null) {
-                saveBlackListedToken(jwtTokenDTO);
-            }
-        } catch (Exception e) {
-            log.error("로그아웃 처리 중 오류 발생: {}", e.getMessage());
+        log.info("jwtTokenDTO: {}", jwtTokenDTO);
+        log.info("{}", validateRefreshToken(jwtTokenDTO));
+
+        if(validateRefreshToken(jwtTokenDTO)){
+            saveBlackListedToken(jwtTokenDTO);
+        }else {
+            throw new JwtTokenException("권한 없음", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -170,8 +170,8 @@ public class AuthServiceImpl implements AuthService {
         String key = REFRESH_TOKEN_PREFIX + id;
 
         try {
-            String storedToken = redisTemplate.opsForValue().get(key);
-            if(storedToken == null || !refreshToken.equals(storedToken)){
+            Object storedToken = redisTemplate.opsForValue().get(key);
+            if(!refreshToken.equals(storedToken)){
                 return false;
             }
 
@@ -185,19 +185,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean saveBlackListedToken(JwtTokenDTO jwtTokenDTO) {
 
-        String refreshToken = null, refreshKey = null, accessToken = null, accessKey = null;
-        Long refreshId = null, accessId = null;
+        String refreshToken = jwtTokenDTO.getRefreshToken();
+        Long refreshId = Long.parseLong((String)jwtTokenUtil.parseToken(refreshToken).get("id"));
+        String refreshKey = BLACKLIST_TOKEN_PREFIX + refreshId;
 
-
-        refreshToken = jwtTokenDTO.getRefreshToken();
-        refreshId = Long.parseLong((String)jwtTokenUtil.parseToken(refreshToken).get("id"));
-        refreshKey = BLACKLIST_TOKEN_PREFIX + refreshId;
-
-        // accessToken 블랙리스트 처리를 위한 ID 추출 수정
-        accessToken = jwtTokenDTO.getAccessToken();
-        accessId = Long.parseLong((String)jwtTokenUtil.parseToken(accessToken).get("id"));
-        accessKey = BLACKLIST_TOKEN_PREFIX + accessId;
-
+        String accessToken = jwtTokenDTO.getAccessToken();
+        Long accessId = Long.parseLong((String)jwtTokenUtil.parseToken(accessToken).get("id"));
+        String accessKey = BLACKLIST_TOKEN_PREFIX + accessId;
 
         try {
             redisTemplate.opsForSet().add(refreshKey, refreshToken);
@@ -243,7 +237,7 @@ public class AuthServiceImpl implements AuthService {
 
         Map<String, String> claims = new HashMap<>();
         MemberDTO member = memberDAO
-                .findMemberById(id).orElseThrow(() -> new MemberException("회원이 없습니다", HttpStatus.BAD_REQUEST));
+                .findMemberById(id).orElseThrow(() -> new MemberException("회원이 없습니다"));
 
         claims.put("id", member.getId().toString());
         claims.put("memberEmail", member.getMemberEmail());
@@ -259,19 +253,17 @@ public class AuthServiceImpl implements AuthService {
     // 핸드폰 인증 코드 발송
     @Override
     public boolean sendMemberPhoneVerificationCode(String memberPhone) {
-        String formattedPhone = memberPhone.replace("-","");
-
         String message = null;
         String code = AuthCodeGenerator.generateAuthCode();
-        message = "[웹 발신]\n인증코드를 입력해주세요.\n{"+code+"}";
-        smsUtil.sendOne(formattedPhone, message);
+        message = "[낮잠 자다만 고양이]\n인증코드를 입력해주세요.\n["+ code +"]";
+        smsUtil.sendOneMemberPhone(memberPhone, message);
 
         // redis 저장
-        String key = "phone:" + formattedPhone;
+        // phone:01078787878:1234587
+        String key = "phone:" + memberPhone + ":" + code;
 
         try {
-            // 검증 로직에 맞춰 Value로 저장
-            redisTemplate.opsForValue().set(key, code, 30, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(key, code, 3, TimeUnit.MINUTES);
             return true;
         } catch (Exception e) {
             return false;
@@ -281,61 +273,38 @@ public class AuthServiceImpl implements AuthService {
     // 핸드폰 인증 코드 검증
     @Override
     public boolean verifyMemberPhoneVerificationCode(String memberPhone, String code) {
-        String formattedPhone = memberPhone.replace("-","");
-        String key = "phone:" + formattedPhone;
-
+        String key = "phone:" + memberPhone + ":" + code;
         try {
-            String storedCode = redisTemplate.opsForValue().get(key);
+            String storedCode = String.valueOf(redisTemplate.opsForValue().get(key));
+            redisTemplate.delete(key);
             return code.equals(storedCode);
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
-
     }
 
     // 이메일 인증 코드 발송
     @Override
-    public boolean sendMemberEmailVerificationCode(String to) {
-        String code = AuthCodeGenerator.generateAuthCode();
-        String key = "email:" + to;
-
-        try {
-            // SmsUtil의 이메일 전송 메서드 활용
-            smsUtil.sendMemberEmail(to, "인증번호 안내", "인증번호: [" + code + "]");
-            redisTemplate.opsForValue().set(key, code, 30, TimeUnit.MINUTES);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public boolean sendMemberEmailVerificationCode(String memberEmail) {
+        return false;
     }
 
     // 이메일 인증 코드 검증
     @Override
     public boolean verifyMemberEmailVerificationCode(String memberEmail, String code) {
-        String key = "email:" + memberEmail;
-        try {
-            String storedCode = redisTemplate.opsForValue().get(key);
-            return code.equals(storedCode);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 이메일 전송 (내부 메서드로 사용 시)
-    public void sendMemberEmail(String to, String subject, String context){
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false , "UTF-8");
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(context);
-            helper.setFrom("oasis0031@gmail.com", "Oasis");
-
-            mailSender.send(mimeMessage);
-
-        } catch (Exception e) {
-            throw new RuntimeException("메일 전송 실패 " + e.getMessage());
-        }
+        return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
