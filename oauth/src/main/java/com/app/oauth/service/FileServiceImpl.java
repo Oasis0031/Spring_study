@@ -1,5 +1,6 @@
 package com.app.oauth.service;
 
+
 import com.app.oauth.domain.dto.response.ApiResponseDTO;
 import com.app.oauth.exception.FileException;
 import com.app.oauth.util.AwsS3Util;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,26 +53,16 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public byte[] getDisplayPath(String fileName) {
+    public ResponseBytes<GetObjectResponse> getDisplayPath(String fileName) {
         String key = fileName.replaceFirst("/", "");
-        byte[] bytes = null;
+        ResponseBytes<GetObjectResponse> responseBytes = null;
 
         try {
-            bytes = awsS3Util.display(key);
-            log.info("bytes: {}", bytes);
+            responseBytes = awsS3Util.display(key);
         } catch (Exception e) {
             throw new FileException("파일 조회 실패", HttpStatus.BAD_REQUEST);
         }
 
-        return bytes;
+        return responseBytes;
     }
 }
-
-
-
-
-
-
-
-
-

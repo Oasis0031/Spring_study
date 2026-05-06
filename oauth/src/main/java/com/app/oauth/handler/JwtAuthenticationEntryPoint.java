@@ -27,7 +27,7 @@ public class JwtAuthenticationEntryPoint  implements AuthenticationEntryPoint {
 
         // Api Response DTO 설계 후 반환
 
-        ApiResponseDTO apiResponseDTO = ApiResponseDTO.of("토큰 없음 또는 인증 실패", false, HttpStatus.UNAUTHORIZED);
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.of(false, "토큰 없음 또는 인증 실패",  HttpStatus.UNAUTHORIZED);
         String json = objectMapper.writeValueAsString(apiResponseDTO);
         response.getWriter().write(json);
         response.getWriter().flush();
